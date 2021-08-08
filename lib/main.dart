@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +19,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  final List questions = [
+  final List<Map<String, Object>> _questions = [
       {
         'questionText': 'What\s your favourite color?', 'answer': ['Black', 'Red', 'Green', 'White'],
       },
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
     });
     print(_questionIndex);
 
-    if (_questionIndex < questions.length){
+    if (_questionIndex < _questions.length){
       print('There are more questions!');
     } else{
       print('No more question available');
@@ -55,19 +55,10 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('My First App'),
           ),
-          body: _questionIndex < questions.length ? Column(
-            children: [
-              Question(
-                questions[_questionIndex]['questionText'],
-              ),
-              ...(questions[_questionIndex]['answer'] as List<String>).map((answer) {
-                return Answer(_answerQuestion, answer);
-              }).toList()
-            ],
-          )
-          : Center(child: Text('Completed!'),
+          body: _questionIndex < _questions.length
+          ? Quiz(answerQuestion: _answerQuestion, questionIndex: _questionIndex, questions: _questions,) 
+          : Result(),
         ),
-      ),
-    );
+      );
   }
 }
