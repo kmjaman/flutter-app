@@ -18,20 +18,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
 
-  var _questionIndex = 0;
-
-  void _answerQuestion(){
-    setState(() {
-      _questionIndex = _questionIndex + 1;
-    });
-    print(_questionIndex);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    List questions = [
+  final List questions = [
       {
         'questionText': 'What\s your favourite color?', 'answer': ['Black', 'Red', 'Green', 'White'],
       },
@@ -42,12 +30,32 @@ class _MyAppState extends State<MyApp> {
         'questionText': 'What\s your favourite food?', 'answer': ['Rice', 'Pizza', 'Burger', 'Donut'],
       }
     ];
+  
+  var _questionIndex = 0;
+
+  void _answerQuestion(){
+
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+    });
+    print(_questionIndex);
+
+    if (_questionIndex < questions.length){
+      print('There are more questions!');
+    } else{
+      print('No more question available');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('My First App'),
           ),
-          body: Column(
+          body: _questionIndex < questions.length ? Column(
             children: [
               Question(
                 questions[_questionIndex]['questionText'],
@@ -56,7 +64,9 @@ class _MyAppState extends State<MyApp> {
                 return Answer(_answerQuestion, answer);
               }).toList()
             ],
-          ),
+          )
+          : Center(child: Text('Completed!'),
+        ),
       ),
     );
   }
